@@ -1,0 +1,63 @@
+<html>
+<title>Bitazza (Id Upload)</title>
+<head>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container col-md-6 card p-xl-5 mt-xl-5">
+    <div id="message" class="alert alert-success" style="display: none" role="alert"></div>
+    <div class="m-xl-5">
+
+        <div class="form-group">
+            <label>Direct Upload Photo Id here</label>
+            <input type="file" name="userPhotoId" class="form-control-file" id="userPhotoId" />
+        </div>
+        <hr/>
+        <H3>Or</H3>
+        <div class="form-group">
+            <label>Enter Image Url </label>
+            <input type="text" class="form-control" id="imageUrl" name="imageUrl" placeholder="Enter URL" />
+            <small>Eg Url : http://www.khaosodenglish.com/upload/files/1438666401_VISAS1.jpg</small>
+        </div>
+        <input type="button" name="submit" class="btn btn-info" id="sendImageUrl" value="Upload Image" />
+    </div>
+
+</div>
+</body>
+
+<script src="assets/js/jquery-3.4.1.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</html>
+<script>
+    $(document).ready(function() {
+        $("#sendImageUrl").click(function(){
+           var img = $("#imageUrl").val();
+           $.post('/uploadIdBase64',{
+               img:img,
+           },function(resp){
+               alert(resp);
+           })
+
+        });
+
+        $("#userPhotoId").change(function(){
+            var file = this.files[0];
+            uploadFile(file);
+        });
+        function uploadFile(file){
+            var formData = new FormData();
+            formData.append('userPhotoId', file);
+            $.ajax({
+                url: '/uploadId',  //Server script to process data
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                //Ajax events
+                success: function(result){
+                    alert(result);
+                }
+            });
+        }
+    });
+</script>
